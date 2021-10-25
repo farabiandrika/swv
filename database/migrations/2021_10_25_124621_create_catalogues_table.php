@@ -18,6 +18,11 @@ class CreateCataloguesTable extends Migration
             $table->string('name');
             $table->string('size');
             $table->integer('stock');
+            $table->integer('price');
+            $table->longText('description');
+            $table->string('gender')->nullable();
+            $table->foreignId('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

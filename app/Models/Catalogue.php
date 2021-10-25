@@ -12,9 +12,17 @@ class Catalogue extends Model
         'name',
         'size',
         'stock',
+        'description',
+        'gender',
+        'category_id',
+        'price',
     ];
 
     public function carts() {
         return $this->hasMany('App\Models\Cart');
+    }
+
+    public function category() {
+        return $this->belongsTo('App\Models\Category');
     }
 }
