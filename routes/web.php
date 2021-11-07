@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => 'revalidate'], function()
+{
+    // Routes yang mau di revalidate masukan di sini
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/tes', function () {
+        return view('customer/pages/index');
+    });
+    Route::get('/tes-admin', function () {
+        return view('admin/pages/index');
+    });
+    
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    
+    Auth::routes();
 });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
