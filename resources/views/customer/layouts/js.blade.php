@@ -24,4 +24,25 @@
     <!--=== jQuery Custom Js ===-->
     <script src="{{ asset('customer/assets/js/custom.js') }}"></script>
 
+    <script>
+        $(document).ready(function() {
+            // $('.date').datepicker({});
+            $('.disabled').keypress(function(e) {
+                return false
+            });
+
+            $('.noSpace').keydown(function(event) {
+                if (event.keyCode == '32') {
+                    event.preventDefault();
+                }
+            });
+
+            $('.number').keypress(function (e){
+                var charCode = (e.which) ? e.which : e.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+            });
+        })
+    </script>
     @yield('js')

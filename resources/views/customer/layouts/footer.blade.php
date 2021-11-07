@@ -1,8 +1,8 @@
 <footer class="footer-area">
     <div class="footer-top-area">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-6 col-lg-3">
+        <div class="row text-center">
+          <div class="col-sm-12 col-lg-12">
             <!--== Start widget Item ==-->
             <div class="widget-item">
               <div class="about-widget">
@@ -20,54 +20,6 @@
             </div>
             <!--== End widget Item ==-->
           </div>
-          <div class="col-sm-6 col-lg-3">
-            <!--== Start widget Item ==-->
-            <div class="widget-item widget-item-one">
-              <h4 class="widget-title">INFORMATION</h4>
-              <div class="widget-menu-wrap">
-                <ul class="nav-menu">
-                  <li><a href="shop.html">Specials</a></li>
-                  <li><a href="shop.html">New products</a></li>
-                  <li><a href="shop.html">Top sellers</a></li>
-                  <li><a href="shop.html">Our stores</a></li>
-                  <li><a href="contact.html">Contact us</a></li>
-                </ul>
-              </div>
-            </div>
-            <!--== End widget Item ==-->
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <!--== Start widget Item ==-->
-            <div class="widget-item widget-item-two">
-              <h4 class="widget-title">QUICK LINKS</h4>
-              <div class="widget-menu-wrap">
-                <ul class="nav-menu">
-                  <li><a href="login.html">New User</a></li>
-                  <li><a href="about-us.html">Help Center</a></li>
-                  <li><a href="about-us.html">Refund Policy</a></li>
-                  <li><a href="about-us.html">Report Spam</a></li>
-                  <li><a href="login.html">Account</a></li>
-                </ul>
-              </div>
-            </div>
-            <!--== End widget Item ==-->
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <!--== Start widget Item ==-->
-            <div class="widget-item">
-              <h4 class="widget-title">newsletter</h4>
-              <div class="widget-newsletter">
-                <p>Sign up for our newsletter & promotions</p>
-                <div class="newsletter-form">
-                  <form>
-                    <input type="email" class="form-control" placeholder="email@example.com">
-                    <button class="btn-submit" type="button">Subscribe</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!--== End widget Item ==-->
-          </div>
         </div>
       </div>
       
@@ -77,7 +29,7 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <p class="copyright">© 2021, <span>Julie</span>. Made with <i class="fa fa-heart icon-heart"></i> by <a target="_blank" href="https://themeforest.net/user/codecarnival/portfolio"> Codecarnival</a></p>
+            <p class="copyright">© 2021 Copyright <span>Smile With Vegas</span></p>
           </div>
         </div>
       </div>

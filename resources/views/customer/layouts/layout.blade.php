@@ -24,7 +24,7 @@
       <!--== End Header Wrapper ==-->
       
       <main class="main-content">
-        @yield('content')        
+        @yield('content')
       </main>
     
       <!--== Start Footer Area Wrapper ==-->

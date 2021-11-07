@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,18 +19,25 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'revalidate'], function()
 {
-    // Routes yang mau di revalidate masukan di sini
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    Route::get('/tes', function () {
-        return view('customer/pages/index');
-    });
-    Route::get('/tes-admin', function () {
-        return view('admin/pages/index');
-    });
+    Route::get('/', [PageController::class, 'index']);
     
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    
-    Auth::routes();
+    Route::middleware(['auth'])->group(function () {
+        Route::prefix('admin')->group(function() {
+            Route::get('/', [KaryawanController::class, 'index']);
+        });
+     
+        Route::middleware(['isCustomer'])->group(function () {
+            // is Customer
+        });
+    });
+    Route::get('/logout', function() {
+        Auth::logout();
+        return redirect('/');
+    });
+
+    Auth::routes([
+        'register' => true, // Registration Routes...
+        'reset' => false, // Password Reset Routes...
+        'verify' => false, // Email Verification Routes...
+    ]);
 });
