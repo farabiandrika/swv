@@ -14,5 +14,8 @@
 <link rel="stylesheet" href="{{ asset('admins/assets/css/color_skins.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
-
+<!-- JQuery DataTable Css -->
+<link rel="stylesheet" href="{{ asset('admins/assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css') }}">
+<!-- Bootstrap Select Css -->
+<link rel="stylesheet" href="{{ asset('admins/assets/plugins/bootstrap-select/css/bootstrap-select.css') }}" />
 @yield('css')

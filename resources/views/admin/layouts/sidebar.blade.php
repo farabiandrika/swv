@@ -226,10 +226,14 @@
                         </div>
                     </div>
                 </li>
-                {{-- <li class="header">Menu</li> --}}
-                <li class="@yield('dashboard-nav')"> <a href="{{ url('/') }}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
-                <li class="@yield('project-nav')"> <a href="{{ url('/project') }}"><i class="zmdi zmdi-view-agenda"></i><span>Project</span></a></li>
-                <li class="@yield('cpa-nav')"> <a href="{{ ('/cpa') }}"><i class="zmdi zmdi-assignment"></i><span>Hitung CPA</span></a></li>
+                <li class="@yield('dashboard-nav')"> <a href="{{ url('/admin') }}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>    
+                <li class="@yield('category-nav')"> <a href="{{ url('/admin/category') }}"><i class="zmdi zmdi-label"></i><span>Category</span></a></li>    
+                <li class="@yield('product-nav')"> <a href="{{ url('/admin/product') }}"><i class="zmdi zmdi-collection-plus"></i><span>Product</span></a></li>    
+                <li class="@yield('transaksi-nav')"> <a href="{{ url('/admin/transaksi') }}"><i class="zmdi zmdi-money-box"></i><span>Transaksi</span></a></li>    
+                @if (auth()->user()->role->name === 'admin')
+                <li class="@yield('karyawan-nav')"> <a href="{{ url('/admin/karyawan') }}"><i class="zmdi zmdi-accounts"></i><span>Karyawan</span></a></li>    
+                <li class="@yield('laporan-nav')"> <a href="{{ url('/admin/laporan') }}"><i class="zmdi zmdi-chart"></i><span>Laporan</span></a></li>    
+                @endif
             </ul>
         </div>
     </div>

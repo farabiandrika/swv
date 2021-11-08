@@ -10,4 +10,12 @@ class AdminController extends Controller
     {
         $this->middleware('isAdmin')->except('logout');
     }
+
+    public function karyawan() {
+        return view('admin.pages.karyawan');
+    }
+
+    public function laporan() {
+        return view('admin.pages.laporan');
+    }
 }

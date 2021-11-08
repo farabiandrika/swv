@@ -1,5 +1,7 @@
 @extends('customer.layouts.layout')
 
+@section('title', 'Register')
+
 @section('content')
     <div class="container mt-5 mb-5">
       <div class="row">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +25,20 @@ Route::group(['middleware' => 'revalidate'], function()
     Route::middleware(['auth'])->group(function () {
         Route::prefix('admin')->group(function() {
             Route::get('/', [KaryawanController::class, 'index']);
+            Route::get('/karyawan', [AdminController::class, 'karyawan']);
+            Route::get('/transaksi', [KaryawanController::class, 'transaksi']);
+            Route::get('/laporan', [AdminController::class, 'laporan']);
+            Route::get('/category', [KaryawanController::class, 'category']);
+            Route::get('/product', [KaryawanController::class, 'product']);
         });
      
         Route::middleware(['isCustomer'])->group(function () {
             // is Customer
+        });
+
+
+        Route::prefix('api')->group(function () {
+            Route::resource('category', CategoryController::class);
         });
     });
     Route::get('/logout', function() {
