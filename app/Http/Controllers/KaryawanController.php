@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -24,6 +25,7 @@ class KaryawanController extends Controller
     }
 
     public function product() {
-        return view('admin.pages.product');
+        $categories = Category::all();
+        return view('admin.pages.product', compact('categories'));
     }
 }

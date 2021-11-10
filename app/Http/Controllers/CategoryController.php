@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogue;
 use App\Models\Category;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -19,13 +20,12 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            //code...
             $categories = Category::all();
 
             return Datatables::of($categories)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" data-toggle="modal" data-target="#editModal" data-id="'.$row->id.'" data-nama="'.$row->nama.'" data-satuanwaktu="'.$row->satuan_waktu.'" class="edit btn btn-secondary btn-sm"><i class="zmdi zmdi-edit"></i></a> <a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm"><i class="zmdi zmdi-delete"></i></a>';
+                    $actionBtn = '<a href="javascript:void(0)" data-toggle="modal" data-target="#editModal" data-id="'.$row->id.'" class="edit btn btn-secondary btn-sm"><i class="zmdi zmdi-edit"></i></a> <a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm"><i class="zmdi zmdi-delete"></i></a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
@@ -139,6 +139,13 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         try {
+            $catalogue = Catalogue::where('category_id', $category->id)->where('isActive', 1)->exists();
+            if ($catalogue) {
+                return response()->json([
+                    'message' => 'Failed To Delete',
+                    'data' => ['Category have a product'],
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
             $category->delete();
             $response = [
                 'message' => 'Category Deleted',

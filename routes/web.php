@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\CatalogueImagesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PageController;
@@ -39,6 +41,9 @@ Route::group(['middleware' => 'revalidate'], function()
 
         Route::prefix('api')->group(function () {
             Route::resource('category', CategoryController::class);
+            Route::POST('/product/{id}/update', [CatalogueController::class, 'updateV2']);
+            Route::resource('product', CatalogueController::class);
+            Route::resource('image', CatalogueImagesController::class);
         });
     });
     Route::get('/logout', function() {

@@ -111,17 +111,9 @@
 
         $(document).on('click','.edit',function() {
             let nama = $(this).data("nama")
-            let satuan_waktu = $(this).data("satuanwaktu");
-            
-            var satuan_hari = satuan_waktu === 'hari' ? 'selected' : ''
-            var satuan_bulan = satuan_waktu === 'bulan' ? 'selected' : ''
-            var satuan_tahun = satuan_waktu === 'tahun' ? 'selected' : ''
-
-            let elm = '<label for="satuan_waktu">Satuan waktu</label><select name="satuan_waktu" class="form-control" id="satuan_waktu"><option value="hari" '+satuan_hari+'>Hari</option><option value="bulan" '+satuan_bulan+'>Bulan</option><option value="tahun" '+satuan_tahun+'>Tahun</option></select>'
             
             $('form#editCategory').data("id", $(this).data('id'))
             $('form#editCategory input[name="nama"]').val(nama)
-            $('form#editCategory div#satuan_waktu_edit').html(elm)
         })
 
         // DELETE category
@@ -145,13 +137,18 @@
                             url: "{{ url('/api/category') }}" + "/" + id,
                             type: 'DELETE',
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            error: function(xhr, status, error) {
+                                for (variable in xhr.responseJSON.data) {
+                                    toastr.error(xhr.responseJSON.data[variable])
+                                }
+                            },                          
                             success: function (response){
                                 console.log(response)
                                 $('#category-table').DataTable().ajax.reload();
+                                toastr.success('Berhasil menghapus category')
                             }
                         });
                     swal.close()
-                    toastr.success('Berhasil menghapus category')
                 } else {
                     swal.close()
                 }
