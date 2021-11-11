@@ -4,8 +4,8 @@
         <div class="col-6 col-sm-4 col-lg-3">
           <div class="header-logo-area">
             <a href="{{ url('/') }}">
-              <img class="logo-main" src="{{ asset('customer/assets/img/logo.png') }}" alt="Logo" />
-              <img class="logo d-none" src="{{ asset('customer/assets/img/logo-light.png') }}" alt="Logo" />
+              <img class="logo-main" src="/assets/images/{{ config('company.configs') !== null ? config('company.configs')->logo : '' }}" style="width: 70px" alt="Logo" />
+              {{-- <img class="logo d-none" src="{{ asset('assets/img/logo-light.png') }}" alt="Logo" /> --}}
             </a>
           </div>
         </div>

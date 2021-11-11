@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\DataTables;
 
 class TransactionController extends Controller
 {
@@ -14,7 +17,23 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $transaction = Transaction::with('user')->get();
+
+            return DataTables::of($transaction)
+                ->addIndexColumn()
+                ->addColumn('total_rp', function($row) {
+                    return "Rp " . number_format($row->total,2,',','.');
+                })
+                ->addColumn('action', function($row){
+                    $actionBtn = '<a href="javascript:void(0)" data-toggle="modal" data-target="#editModal" data-id="'.$row->id.'" class="info btn btn-secondary btn-sm"><i class="zmdi zmdi-info"></i></a> <a href="javascript:void(0)" data-id="'.$row->id.'" class="delete btn btn-danger btn-sm"><i class="zmdi zmdi-delete"></i></a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action','total_rp'])
+                ->make(true);
+        } catch (QueryException $e) {
+            return response()->json(['message' => 'Failed '.$e->errorInfo,]);
+        }
     }
 
     /**

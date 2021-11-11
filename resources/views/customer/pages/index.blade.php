@@ -1,7 +1,7 @@
 @extends('customer.layouts.layout')
 
 @section('title')
-    Smile With Vegas
+{{ config('company.configs') !== null ? config('company.configs')->name : '' }}
 @endsection
 
 @section('content')

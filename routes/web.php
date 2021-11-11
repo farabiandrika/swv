@@ -4,9 +4,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\CatalogueImagesController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KaryawanManager;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +27,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'revalidate'], function()
 {
     Route::get('/', [PageController::class, 'index']);
+    Route::get('/config', function() {
+        return config('company.configs') === null ? 'null' : 'ada';
+    });
     
     Route::middleware(['auth'])->group(function () {
         Route::prefix('admin')->group(function() {
@@ -34,6 +39,8 @@ Route::group(['middleware' => 'revalidate'], function()
             Route::get('/laporan', [AdminController::class, 'laporan']);
             Route::get('/category', [KaryawanController::class, 'category']);
             Route::get('/product', [KaryawanController::class, 'product']);
+            Route::get('/setting', [AdminController::class, 'setting']);
+
         });
      
         Route::middleware(['isCustomer'])->group(function () {
@@ -47,6 +54,8 @@ Route::group(['middleware' => 'revalidate'], function()
             Route::resource('product', CatalogueController::class);
             Route::resource('image', CatalogueImagesController::class);
             Route::resource('karyawan', KaryawanManager::class);
+            Route::resource('transaksi', TransactionController::class);
+            Route::POST('config/update', [ConfigController::class, 'update'])->name('config.update');
 
         });
     });

@@ -8,31 +8,26 @@
 <div class="row clearfix">
     <div class="col-lg-12">
         <div class="card">
-            <div class="header align-right">
-                <a href="javascript:;" aria-modal="true" data-toggle="modal" data-target="#addProduct" type="button" class="btn btn-primary">Tambah Product</a>
-            </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table id="product-table" class="table table-bordered table-striped table-hover">
+                    <table id="transaksi-table" class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Product</th>
-                                <th>Size</th>
-                                <th>Jumlah</th>
-                                <th>Total</th>
                                 <th>Nama Pembeli</th>
+                                <th>Resi</th>
+                                <th>Status</th>
+                                <th>Total</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Product</th>
-                                <th>Size</th>
-                                <th>Jumlah</th>
-                                <th>Total</th>
                                 <th>Nama Pembeli</th>
+                                <th>Resi</th>
+                                <th>Status</th>
+                                <th>Total</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -114,17 +109,16 @@
     
     <script>
         $(document).ready(function() {
-            $('#product-table').DataTable({
+            $('#transaksi-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{route('product.index')}}",
+                ajax: "{{route('transaksi.index')}}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'name', name: 'name'},
-                    {data: 'size', name: 'size'},
-                    {data: 'stock', name: 'stock'},
-                    {data: 'price_rp', name: 'price_rp'},
-                    {data: 'category.nama', name: 'category.nama'},
+                    {data: 'user.name', name: 'user.name'},
+                    {data: 'resi', name: 'resi'},
+                    {data: 'status', name: 'status'},
+                    {data: 'total_rp', name: 'total_rp'},
                     {
                         data: 'action',
                         name: 'action',
@@ -245,7 +239,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success: function (response){
                                 console.log(response)
-                                $('#product-table').DataTable().ajax.reload();
+                                $('#transaksi-table').DataTable().ajax.reload();
                             }
                         });
                     swal.close()
@@ -278,7 +272,7 @@
                   }
                 },
                 success: function(response){
-                    $('#product-table').DataTable().ajax.reload();
+                    $('#transaksi-table').DataTable().ajax.reload();
                     $('#addProduct').modal('toggle')
                     $('form#addProduct').trigger('reset')
                     toastr.success("Berhasil menambahkan product")
@@ -311,7 +305,7 @@
                 },
                 success: function(response){
                     console.log(response)
-                    $('#product-table').DataTable().ajax.reload();
+                    $('#transaksi-table').DataTable().ajax.reload();
                     $('#editModal').modal('toggle')
                     $('#editProduct').trigger("reset");
                     toastr.success('Berhasil mengupdate product')

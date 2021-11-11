@@ -2,7 +2,7 @@
     <ul class="menu_list">
         <li>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="index.html"><img src="{{ asset('admins/assets/images/logo.svg') }}" alt="Logo"></a>
+            <a class="navbar-brand" href="index.html"><img src="/assets/images/{{ config('company.configs') !== null ? config('company.configs')->logo : '' }}" alt="Logo"></a>
         </li>
         <li><a href="javascript:void(0);" class="menu-sm"><i class="zmdi zmdi-swap"></i></a></li>        
         
@@ -233,6 +233,7 @@
                 @if (auth()->user()->role->name === 'admin')
                 <li class="@yield('karyawan-nav')"> <a href="{{ url('/admin/karyawan') }}"><i class="zmdi zmdi-accounts"></i><span>Karyawan</span></a></li>    
                 <li class="@yield('laporan-nav')"> <a href="{{ url('/admin/laporan') }}"><i class="zmdi zmdi-chart"></i><span>Laporan</span></a></li>    
+                <li class="@yield('setting-nav')"> <a href="{{ url('/admin/setting') }}"><i class="zmdi zmdi-settings"></i><span>Setting</span></a></li>    
                 @endif
             </ul>
         </div>

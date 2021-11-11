@@ -1,10 +1,10 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<meta name="description" content="Sistem penentuan jadwal project menggunakan CPM Method">
+<meta name="description" content="E-Commerce">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <title>@yield('title')</title>
-<link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Favicon-->
+<link rel="icon" href="/assets/images/{{ config('company.configs') !== null ? config('company.configs')->logo : '' }}" type="image/x-icon"> <!-- Favicon-->
 <link rel="stylesheet" href="{{ asset('admins/assets/plugins/bootstrap/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('admins/assets/plugins/sweetalert/sweetalert.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admins/assets/plugins/morrisjs/morris.css') }}" />

@@ -17,9 +17,9 @@ class CreateConfigsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('logo');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
     }

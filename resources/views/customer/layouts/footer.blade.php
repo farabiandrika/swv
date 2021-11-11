@@ -8,13 +8,13 @@
               <div class="about-widget">
                 <div class="footer-logo-area">
                   <a href="index.html">
-                    <img class="logo-main" src="{{ asset('customer/assets/img/logo.png') }}" alt="Logo" />
+                    <img class="logo-main" src="/assets/images/{{ config('company.configs') !== null ? config('company.configs')->logo : '' }}"" alt="Logo" />
                   </a>
                 </div>
-                <p class="desc">Lorem ipsum dolor sit amet, consectet adipi elit, sed do eius tempor incididun ut labore gthydolore.</p>
+                {{-- <p class="desc">Lorem ipsum dolor sit amet, consectet adipi elit, sed do eius tempor incididun ut labore gthydolore.</p> --}}
                 <ul>
-                  <li><i class="ion-ios7-location-outline"></i> 184 Main Rd E, St Albans VIC 3021,</li>
-                  <li><i class="ion-ios7-email-outline"></i> <a href="mailto://info@example.com">info@example.com</a></li>
+                  <li><i class="ion-ios7-location-outline"></i> {{ config('company.configs') != null ? config('company.configs')->address : '' }},</li>
+                  <li><i class="ion-ios7-email-outline"></i> <a href="mailto://{{ config('company.configs') != null ? config('company.configs')->email : '' }}">{{ config('company.configs') != null ? config('company.configs')->email : '' }}</a></li>
                 </ul>
               </div>
             </div>
@@ -29,7 +29,7 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <p class="copyright">© 2021 Copyright <span>Smile With Vegas</span></p>
+            <p class="copyright">© 2021 Copyright <span>{{ config('company.configs') != null ? config('company.configs')->name : '' }}</span></p>
           </div>
         </div>
       </div>

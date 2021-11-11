@@ -18,4 +18,8 @@ class AdminController extends Controller
     public function laporan() {
         return view('admin.pages.laporan');
     }
+    
+    public function setting() {
+        return view('admin.pages.setting');
+    }
 }
