@@ -81,12 +81,14 @@
   }
 
   // Popup Quick View JS
-  var popupProduct = $(".product-quick-view-modal");
   $(".add-quick-view").on('click', function() {
+    let id = $(this).data('id');
+    let popupProduct = $(`.product-quick-view-modal#qv-${id}`);
     popupProduct.addClass('active');
     $("body").addClass("fix");
   });
   $(".btn-close, .canvas-overlay").on('click', function() {
+    let popupProduct = $('.product-quick-view-modal');
     popupProduct.removeClass('active');
     $("body").removeClass("fix");
   });
@@ -237,14 +239,15 @@
   $('.video-popup').fancybox();
 
   // Product Quantity JS
-  var proQty = $(".pro-qty");
+  var proQty = $(`.pro-qty`);
   proQty.append('<div class="inc qty-btn">+</div>');
   proQty.append('<div class= "dec qty-btn">-</div>');
   $('.qty-btn').on('click', function (e) {
     e.preventDefault();
+    let stock = $('.product-quick-view-modal.active').data('stock');
     var $button = $(this);
     var oldValue = $button.parent().find('input').val();
-    if ($button.hasClass('inc')) {
+    if ($button.hasClass('inc') && oldValue < stock) {
       var newVal = parseFloat(oldValue) + 1;
     } else {
       // Don't allow decrementing below zero

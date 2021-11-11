@@ -58,7 +58,7 @@ class User extends Authenticatable
     }
     
     public function carts() {
-        return $this->hasMany('App\Models\Cart')->where('status', 0);
+        return $this->hasMany('App\Models\Cart')->where('status', 0)->with('catalogue');
     }
 
     public function transactions() {

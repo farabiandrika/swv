@@ -12,10 +12,10 @@
         <div class="col-sm-4 col-lg-7 d-none d-lg-block">
           <div class="header-navigation-area">
             <ul class="main-menu nav position-relative">              
-              <li class="has-submenu"><a href="{{ url('/') }}">Products</a>
+              <li class="has-submenu"><a href="{{ url('/products') }}">Products</a>
               </li>              
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="about-us.html">About</a></li>
+              <li><a href="mailto://{{ config('company.configs') != null ? config('company.configs')->email : '' }}">Contact</a></li>
+              <li><a href="{{ url('/about') }}">About</a></li>
             </ul>
           </div>
         </div>
@@ -32,6 +32,7 @@
                   <ul class="currency-dropdown">
                     <li class="account">
                       <ul>
+                        <li><a href="{{ url('/transaction') }}">Transaction</a></li>
                         <li><a href="{{ url('/logout') }}">Logout</a></li>
                       </ul>
                     </li>
@@ -40,38 +41,36 @@
                 <li class="mini-cart">
                   <a class="action-item" href="#/">
                     <i class="zmdi zmdi-shopping-cart-plus icon"></i>
-                    <span class="cart-quantity">2</span>
+                    <span class="cart-quantity">{{ count(auth()->user()->carts) }}</span>
                   </a>
                   <div class="mini-cart-dropdown">
+                    @foreach (auth()->user()->carts as $cart)
+                    @php $subTotal += $cart->quantity * $cart->catalogue->price @endphp
                     <div class="cart-item">
                       <div class="thumb">
-                        <img class="w-100" src="{{ asset('customer/assets/img/shop/cart/1.jpg') }}" alt="Image-HasTech">
+                        <img class="w-100" src="{{ asset('customer/assets/img/shop/cart/1.jpg') }}">
                       </div>
                       <div class="content">
-                        <h5 class="title"><a href="#/">Literature Classical - s</a></h5>
-                        <span class="product-quantity">1 ×</span>
-                        <span class="product-price">$79.00</span>
+                        <h5 class="title"><a href="#/">{{ $cart->catalogue->name }}</a></h5>
+                        <span class="product-quantity">{{ $cart->quantity }}</span>
+                        <span class="product-price">{{ number_format($cart->quantity * $cart->catalogue->price,2,',','.') }}</span>
                         <a class="cart-trash" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
                       </div>
                     </div>
-                    <div class="cart-item">
-                      <div class="thumb">
-                        <img class="w-100" src="{{ asset('customer/assets/img/shop/cart/2.jpg') }}" alt="Image-HasTech">
-                      </div>
-                      <div class="content">
-                        <h5 class="title"><a href="#/">Fit Wool Suit - m / gold</a></h5>
-                        <span class="product-quantity">1 ×</span>
-                        <span class="product-price">$80.00</span>
-                        <a class="cart-trash" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
-                      </div>
-                    </div>
+                    @endforeach
+                    @if (!auth()->user()->carts->isEmpty())
                     <div class="cart-total-money">
-                      <h5>Total: <span class="money">$159.00</span></h5>
+                      <h5>Total: <span class="money">@php $subTotal @endphp</span></h5>
                     </div>
                     <div class="cart-btn">
                       <a href="cart.html">View Cart</a>
                       <a href="checkout.html">Checkout</a>
                     </div>
+                    @else
+                    <div class="text-center">
+                      <h5>Cart is Empty</h5>
+                    </div>
+                    @endif
                   </div>
                 </li>
               </ul>

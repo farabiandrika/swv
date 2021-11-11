@@ -13,11 +13,12 @@ class Cart extends Model
         'user_id',
         'quantity',
         'status',
-        'transaction_id'
+        'transaction_id',
+        'keterangan',
     ];
 
     public function catalogue() {
-        return $this->belongsTo('App\Models\Catalogue');
+        return $this->belongsTo('App\Models\Catalogue')->where('isActive', 1);
     }
 
     public function user() {
