@@ -65,7 +65,7 @@
                     </div>
                     <div class="cart-btn">
                       <a href="cart.html">View Cart</a>
-                      <a href="checkout.html">Checkout</a>
+                      <a href="{{ url('/checkout') }}">Checkout</a>
                     </div>
                     @else
                     <div class="text-center">

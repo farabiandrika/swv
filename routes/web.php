@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'revalidate'], function()
 {
     Route::get('/', [PageController::class, 'index']);
+    Route::get('/checkout', [PageController::class, 'checkout']);
+    Route::POST('/process-checkout', [PageController::class, 'processCheckout']);
     Route::get('/config', function() {
         return config('company.configs') === null ? 'null' : 'ada';
     });

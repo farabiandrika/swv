@@ -20,6 +20,7 @@ class ConfigSeeder extends Seeder
             'phone' => '0761851266',
             'address' => 'Jl. Samarinda Kelurahan No.36B, Tengkerang Utara, Kec. Bukit Raya, Kota Pekanbaru, Riau 28126',
             'email' => 'smilewithvegas@swv.id',
+            'bank_account' => 'BCA - 123123123',
         ]);
     }
 }

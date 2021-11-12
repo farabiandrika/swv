@@ -18,4 +18,6 @@
 <link rel="stylesheet" href="{{ asset('admins/assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css') }}">
 <!-- Bootstrap Select Css -->
 <link rel="stylesheet" href="{{ asset('admins/assets/plugins/bootstrap-select/css/bootstrap-select.css') }}" />
+@include('sweetalert::alert')
+
 @yield('css')

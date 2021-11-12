@@ -16,10 +16,11 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->integer('total');
+            $table->integer('total')->nullable();
             $table->integer('status')->default(0);
             $table->string('resi')->nullable();
             $table->string('ekspedisi')->nullable();
+            $table->string('address');
             $table->timestamps();
         });
     }

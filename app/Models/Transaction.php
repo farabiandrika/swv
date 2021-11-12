@@ -15,6 +15,7 @@ class Transaction extends Model
         'status',
         'resi',
         'ekspedisi',
+        'address',
     ];
 
     public function carts() {

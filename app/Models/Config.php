@@ -14,5 +14,6 @@ class Config extends Model
         'address',
         'phone',
         'email',
+        'bank_account',
     ];
 }

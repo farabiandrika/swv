@@ -25,7 +25,7 @@
     <script src="{{ asset('customer/assets/js/custom.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
     <script src="{{ asset('admins/assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
-
+    @include('sweetalert::alert')
     <script>
         $(document).ready(function() {
             // $('.date').datepicker({});
