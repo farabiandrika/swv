@@ -36,6 +36,10 @@
     <!--== Main Style CSS ==-->
     <link href="{{ asset('customer/assets/css/style.css') }}" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('admins/assets/plugins/sweetalert/sweetalert.css') }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    
     @yield('css')
     <!--[if lt IE 9]>
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>

@@ -44,23 +44,24 @@
                     <span class="cart-quantity">{{ count(auth()->user()->carts) }}</span>
                   </a>
                   <div class="mini-cart-dropdown">
+                    @php $subTotal = 0 @endphp
                     @foreach (auth()->user()->carts as $cart)
                     @php $subTotal += $cart->quantity * $cart->catalogue->price @endphp
                     <div class="cart-item">
                       <div class="thumb">
-                        <img class="w-100" src="{{ asset('customer/assets/img/shop/cart/1.jpg') }}">
+                        <img class="w-100" src="{{ asset('images/'.$cart->catalogue->images->random()->name) }}">
                       </div>
                       <div class="content">
                         <h5 class="title"><a href="#/">{{ $cart->catalogue->name }}</a></h5>
                         <span class="product-quantity">{{ $cart->quantity }}</span>
-                        <span class="product-price">{{ number_format($cart->quantity * $cart->catalogue->price,2,',','.') }}</span>
-                        <a class="cart-trash" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
+                        <span class="product-price">Rp. {{ number_format($cart->quantity * $cart->catalogue->price,0,',','.') }}</span>
+                        <a class="cart-trash deleteCart" data-id={{ $cart->id }} href="javascript:void(0);"><i class="fa fa-trash"></i></a>
                       </div>
                     </div>
                     @endforeach
                     @if (!auth()->user()->carts->isEmpty())
                     <div class="cart-total-money">
-                      <h5>Total: <span class="money">@php $subTotal @endphp</span></h5>
+                      <h5>Total: <span class="money">Rp. {{ number_format($subTotal,0,',','.') }}</span></h5>
                     </div>
                     <div class="cart-btn">
                       <a href="cart.html">View Cart</a>

@@ -251,13 +251,14 @@ class CatalogueController extends Controller
     {
         try {
             $catalogue = Catalogue::find($id);
-            $images = CatalogueImages::where('catalogue_id', $catalogue->id)->get();
-            foreach ($images as $key => $image) {
-                unlink('images/'.$image->name);
-                $image->delete();
-            }
+            // $images = CatalogueImages::where('catalogue_id', $catalogue->id)->get();
+            // foreach ($images as $key => $image) {
+            //     unlink('images/'.$image->name);
+            //     $image->delete();
+            // }
 
-            $catalogue->delete();
+            // $catalogue->delete();
+            $catalogue->update(['isActive' => 0]);
 
             $response = [
                 'message' => 'Product Deleted',

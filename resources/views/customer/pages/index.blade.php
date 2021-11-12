@@ -9,28 +9,19 @@
 <section class="home-slider-area">
     <div class="swiper-container swiper-slide-gap home-slider-container default-slider-container">
       <div class="swiper-wrapper home-slider-wrapper slider-default">
+        @foreach ($products as $product)    
         <div class="swiper-slide">
-          <div class="slider-content-area" data-bg-img="{{ asset('customer/assets/img/slider/slider-01.jpg') }}">
+          <div class="slider-content-area" data-bg-img="{{ asset('images/'.$product->images->random()->name) }}">
             <div class="slider-content">
-              <h5 class="sub-title">BEST PRICE : $866</h5>
-              <h2 class="title">NEW ARRIVAL</h2>
-              <h4>70% OFF THIS WINTER</h4>
+              <h5 class="sub-title">Rp. {{ number_format($product->price,0,',','.') }}</h5>
+              <h2 class="title">{{ $product->name }}</h2>
+              {{-- <h4>70% OFF THIS WINTER</h4> --}}
               <p>There are many variations of passages of Lorem Ipsum availables, but the majority have suffered alteration in some form.</p>
               <a class="btn-slider" href="shop.html">Shop Now</a>
             </div>
           </div>
         </div>
-        <div class="swiper-slide">
-          <div class="slider-content-area" data-bg-img="{{ asset('customer/assets/img/slider/slider-02.jpg') }}">
-            <div class="slider-content">
-              <h5 class="sub-title">BEST PRICE : $866</h5>
-              <h2 class="title">NEW ARRIVAL</h2>
-              <h4>70% OFF THIS WINTER</h4>
-              <p>There are many variations of passages of Lorem Ipsum availables, but the majority have suffered alteration in some form.</p>
-              <a class="btn-slider" href="shop.html">Shop Now</a>
-            </div>
-          </div>
-        </div>
+        @endforeach
       </div>
 
       <!--== Add Swiper Arrows ==-->
@@ -112,9 +103,9 @@
                     <div class="swiper-container swiper-slide-gap product-slider-container">
                       <div class="swiper-wrapper">
                         @foreach ($products as $key => $product)
-                          @if ($key % 2 == 0)
-                          <div class="swiper-slide">
-                          @endif
+                        @if ($key%2 === 0)
+                        <div class="swiper-slide">
+                        @endif
                           <!--== Start Shop Item ==-->
                           <div class="product-item" style="width:200px;">
                             <div class="inner-content">
@@ -150,10 +141,9 @@
                             </div>
                           </div>
                           <!--== End Shop Item ==-->
+                        @if (($key+1)%2 === 0)
                         </div>
-                          @if ($key % 2 == 0)
-                        </div>
-                          @endif
+                        @endif
                         @endforeach
                       </div>
 
@@ -200,16 +190,25 @@
                   <label for="forSizes" class="form-label">Size:</label>
                   <input type="text" disabled value="{{ $product->size }}" id="" class="form-control">
                 </div>
+                <form data-id="{{ $product->id }}" id="addToCart-{{ $product->id }}" class="addToCart">
+                  @csrf
                 <div class="quick-view-select-item">
                   <label for="forKeterangan" class="form-label">Keterangan:</label>
-                  <input type="text" name="keterangan" id="keterangan" class="form-control">
+                  <input type="text" required name="keterangan" id="keterangan" class="form-control">
                 </div>
               </div>
               <div class="action-top">
                 <div class="pro-qty" id="proqty-qv-{{ $product->id }}" data-limit="{{ $product->stock }}">
-                  <input type="text" id="quantity4" title="Quantity" value="1" />
+                  <input type="text" required name="quantity" id="quantity4" title="Quantity" value="1" />
                 </div>
-                <button class="btn btn-black">Add to cart</button>
+                @if (Auth::check())
+                  @if (auth()->user()->role_id === 3)
+                    <button type="submit" class="btn btn-black">Add to cart</button>                    
+                  @endif
+                @else
+                <a href="{{ url('/login') }}" class="btn btn-black">Login to Buy</a>                    
+                @endif
+                </form>
               </div>
             </div>
           </div>
@@ -220,4 +219,39 @@
   </aside>
   <!--== End Quick View Menu ==-->
   @endforeach
+@endsection
+
+@section('js')
+    <script>
+      $(document).ready(function() {
+        $('.addToCart').submit(function(e) {
+          e.preventDefault()
+          let id = $(this).data('id')
+
+          let frm = $(`form#addToCart-${id}`);
+          let formData = new FormData(frm[0]);
+
+          formData.append('id', id);
+
+          $.ajax({
+                method: "POST",
+                url: "{{route('cart.store')}}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: formData,
+                dataType: 'JSON',
+                processData: false,
+                contentType: false,
+                error: function(xhr, status, error) {
+                    for (variable in xhr.responseJSON.data) {
+                        toastr.error(xhr.responseJSON.data[variable])
+                    }
+                },
+                success: function(response){
+                    location.reload();
+                    toastr.success("Berhasil menambahkan cart")
+                }
+            })
+        })
+      })
+    </script>
 @endsection

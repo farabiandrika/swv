@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class CartController extends Controller
 {
@@ -35,7 +38,27 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'keterangan' => 'required|string',
+            'quantity' => 'required|numeric',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            $cart = Cart::create(array_merge($validator->validated(), ['catalogue_id' => $request->id, 'user_id' => auth()->user()->id]));
+            $response = [
+                'message' => 'Added to cart',
+                'data' => $cart,
+            ];
+            return response()->json($response, Response::HTTP_CREATED);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed '.$e,
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -80,6 +103,16 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        try {
+            $cart->delete();
+            $response = [
+                'message' => 'Cart Deleted',
+            ];
+            return response()->json($response, Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed '.$e,
+            ]);
+        }
     }
 }

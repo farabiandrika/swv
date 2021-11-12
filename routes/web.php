@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\CatalogueImagesController;
 use App\Http\Controllers\CategoryController;
@@ -56,6 +57,7 @@ Route::group(['middleware' => 'revalidate'], function()
             Route::resource('karyawan', KaryawanManager::class);
             Route::resource('transaksi', TransactionController::class);
             Route::POST('config/update', [ConfigController::class, 'update'])->name('config.update');
+            Route::resource('cart', CartController::class);
 
         });
     });

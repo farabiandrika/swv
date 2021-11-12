@@ -23,6 +23,8 @@
     
     <!--=== jQuery Custom Js ===-->
     <script src="{{ asset('customer/assets/js/custom.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script src="{{ asset('admins/assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -41,6 +43,45 @@
                 var charCode = (e.which) ? e.which : e.keyCode;
                 if (charCode > 31 && (charCode < 48 || charCode > 57)) {
                     return false;
+                }
+            });
+        })
+
+
+        $(document).on('click', '.deleteCart', function(e) {
+            e.preventDefault()
+            let id = $(this).data("id")
+            console.log(id)
+        
+        swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this cart!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function(isConfirm){
+                if (isConfirm) {
+                    $.ajax({
+                            url: "{{ url('/api/cart') }}" + "/" + id,
+                            type: 'DELETE',
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            error: function(xhr, status, error) {
+                                for (variable in xhr.responseJSON.data) {
+                                    toastr.error(xhr.responseJSON.data[variable])
+                                }
+                            },                          
+                            success: function (response){
+                                console.log(response)
+                            }
+                        });
+                        location.reload();
+                    swal.close()
+                } else {
+                    swal.close()
                 }
             });
         })

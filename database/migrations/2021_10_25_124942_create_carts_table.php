@@ -18,7 +18,7 @@ class CreateCartsTable extends Migration
             $table->foreignId('catalogue_id');
             $table->foreignId('user_id');
             $table->integer('quantity');
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->foreignId('transaction_id')->nullable();
             $table->timestamps();
         });
