@@ -19,6 +19,8 @@
 <script src="{{ asset('admins/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('admins/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
 <script src="{{ asset('admins/assets/js/pages/tables/jquery-datatable.js') }}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css" integrity="sha512-+0Vhbu8sRUlg+R/NKgTv7ahM+szPDF10G6J5PcHb1tOrAaquZIUiKUV3TH16mi6fuH4NjvHqlok6ppBhR6Nxuw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
         $('.add').click(function () {
@@ -42,6 +44,9 @@
             t.value=t.value.replace(/\s/g,'');
         }
     }
+    $('.disabled').keypress(function(e) {
+    e.preventDefault();
+});
 </script>
 
 @yield('js')

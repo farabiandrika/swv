@@ -53,6 +53,7 @@ Route::group(['middleware' => 'revalidate'], function()
 
 
         Route::prefix('api')->group(function () {
+            Route::POST('/getLaporan', [AdminController::class, 'getLaporan'])->name('getLaporan');
             Route::resource('category', CategoryController::class);
             Route::POST('/product/{id}/update', [CatalogueController::class, 'updateV2']);
             Route::resource('product', CatalogueController::class);
