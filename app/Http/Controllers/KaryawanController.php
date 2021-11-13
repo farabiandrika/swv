@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogue;
 use App\Models\Category;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +20,11 @@ class KaryawanController extends Controller
     }
 
     public function index() {
-        return view('admin.pages.index');
+        $total_products = Catalogue::where('isActive', 1)->count();
+        $total_orders = Transaction::all()->count();
+        $total_sales = Transaction::where('status',2)->count();
+        $total_customers = User::where('role_id', 3)->count();
+        return view('admin.pages.index', compact('total_products','total_orders','total_sales','total_customers'));
     }
 
     public function transaksi() {
