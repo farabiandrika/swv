@@ -10,10 +10,10 @@ use Yajra\DataTables\DataTables;
 
 class AdminController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('isAdmin')->except('logout');
-    // }
+    public function __construct()
+    {
+        $this->middleware('isAdmin')->except('logout');
+    }
 
     public function karyawan() {
         return view('admin.pages.karyawan');
