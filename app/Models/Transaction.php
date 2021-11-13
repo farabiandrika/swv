@@ -16,10 +16,11 @@ class Transaction extends Model
         'resi',
         'ekspedisi',
         'address',
+        'bukti_bayar',
     ];
 
     public function carts() {
-        return $this->hasMany('App\Models\Cart');
+        return $this->hasMany('App\Models\Cart')->with('catalogue');
     }
 
     public function user() {

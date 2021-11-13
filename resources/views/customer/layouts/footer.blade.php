@@ -7,7 +7,7 @@
             <div class="widget-item">
               <div class="about-widget">
                 <div class="footer-logo-area">
-                  <a href="index.html">
+                  <a href="{{ url('/') }}">
                     <img class="logo-main" src="/assets/images/{{ config('company.configs') !== null ? config('company.configs')->logo : '' }}"" alt="Logo" />
                   </a>
                 </div>

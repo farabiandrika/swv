@@ -81,6 +81,7 @@ class ConfigController extends Controller
                 'address' => 'required|string',
                 'phone' => 'required|numeric',
                 'email' => 'required|email',
+                'bank_account' => 'required|string',
             ]);
     
             if ($validator->fails()) {

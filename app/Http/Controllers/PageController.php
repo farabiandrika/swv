@@ -17,6 +17,9 @@ class PageController extends Controller
     }
 
     public function checkout() {
+        if (auth()->user()->carts->isEmpty()) {
+            abort(404);
+        }
         return view('customer.pages.checkout');
     }
 
@@ -58,5 +61,9 @@ class PageController extends Controller
             Alert::error('Error', $e->errorInfo);
             return redirect()->back();
         }
+    }
+
+    public function transaction() {
+        return view('customer.pages.transaction');
     }
 }

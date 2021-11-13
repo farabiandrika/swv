@@ -64,11 +64,10 @@
                       <h5>Total: <span class="money">Rp. {{ number_format($subTotal,0,',','.') }}</span></h5>
                     </div>
                     <div class="cart-btn">
-                      <a href="cart.html">View Cart</a>
                       <a href="{{ url('/checkout') }}">Checkout</a>
                     </div>
                     @else
-                    <div class="text-center">
+                    <div class="text-center mt-5">
                       <h5>Cart is Empty</h5>
                     </div>
                     @endif

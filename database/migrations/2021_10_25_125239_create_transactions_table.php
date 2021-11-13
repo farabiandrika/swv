@@ -21,6 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->string('resi')->nullable();
             $table->string('ekspedisi')->nullable();
             $table->string('address');
+            $table->string('bukti_bayar')->nullable();
             $table->timestamps();
         });
     }

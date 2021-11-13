@@ -30,6 +30,7 @@ Route::group(['middleware' => 'revalidate'], function()
     Route::get('/', [PageController::class, 'index']);
     Route::get('/checkout', [PageController::class, 'checkout']);
     Route::POST('/process-checkout', [PageController::class, 'processCheckout']);
+    Route::get('/transaction', [PageController::class, 'transaction']);
     Route::get('/config', function() {
         return config('company.configs') === null ? 'null' : 'ada';
     });
@@ -57,9 +58,14 @@ Route::group(['middleware' => 'revalidate'], function()
             Route::resource('product', CatalogueController::class);
             Route::resource('image', CatalogueImagesController::class);
             Route::resource('karyawan', KaryawanManager::class);
-            Route::resource('transaksi', TransactionController::class);
+            Route::POST('transaction/{id}/update', [TransactionController::class, 'updateV2']);
+            Route::PUT('transaction/{id}/diterima', [TransactionController::class, 'pesananDiterima']);
+            Route::get('transaction/{id}', [TransactionController::class, 'show']);
+            Route::resource('transaction', TransactionController::class)->except(['show']);
             Route::POST('config/update', [ConfigController::class, 'update'])->name('config.update');
             Route::resource('cart', CartController::class);
+            Route::get('getTransaction', [KaryawanController::class, 'getTransaction']);
+            Route::POST('updateResi', [KaryawanController::class, 'updateResi']);
 
         });
     });

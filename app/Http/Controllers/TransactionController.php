@@ -63,9 +63,21 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show($id)
     {
-        //
+        try {
+            $transaction1 = Transaction::where('id',$id)->with('carts')->with('user')->first();
+
+            $response = [
+                'message' => 'Transaction Obtained',
+                'data' => $transaction1,
+            ];
+            return response()->json($response, Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed '.$e,
+            ],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -91,6 +103,29 @@ class TransactionController extends Controller
         //
     }
 
+    public function updateV2(Request $request, $id)
+    {
+        try {
+            $transaction = Transaction::findOrFail($id);
+
+            $imageName = $transaction->id.'_'.time().'.'.$request->bukti_bayar->extension();  
+            $request->bukti_bayar->move('bukti_bayar', $imageName);
+
+            $transaction->bukti_bayar = $imageName;
+            $transaction->save();
+
+            $response = [
+                'message' => 'Success Upload Bukti',
+            ];
+
+            return response()->json($response, Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed '.$e,
+            ],Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -99,6 +134,43 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        try {
+            foreach ($transaction->carts as $key => $item) {
+                $item->catalogue->stock += $item->quantity;
+                $item->catalogue->save();
+                $item->delete();
+            }
+
+            if ($transaction->bukti_bayar != null) {
+                unlink('bukti_bayar/'.$transaction->bukti_bayar);
+            }
+            $transaction->delete();
+
+            $response = [
+                'message' => 'Transaction Deleted',
+            ];
+            return response()->json($response, Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed '.$e,
+            ]);
+        }
+    }
+
+    public function pesananDiterima($id) {
+        try {
+            $transaction = Transaction::findOrFail($id);
+            $transaction->status = 2;
+            $transaction->save();
+
+            $response = [
+                'message' => 'Status Pesanan Diterima',
+            ];
+            return response()->json($response, Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed '.$e,
+            ]);
+        }
     }
 }

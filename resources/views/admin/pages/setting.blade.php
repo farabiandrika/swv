@@ -24,6 +24,10 @@
                         <input type="text" name="phone" class="form-control number" id="phone" value="{{ config('company.configs') !== null ? config('company.configs')->phone : '' }}" required>
                     </div>
                     <div class="form-group">
+                        <label for="bank_account">Bank Account</label>
+                        <input type="text" name="bank_account" class="form-control number" id="bank_account" value="{{ config('company.configs') !== null ? config('company.configs')->bank_account : '' }}" required>
+                    </div>
+                    <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" name="email" class="form-control" id="email" value="{{ config('company.configs') !== null ? config('company.configs')->email : '' }}" required>
                     </div>

@@ -17,7 +17,9 @@
                                 <th>Nama Pembeli</th>
                                 <th>Resi</th>
                                 <th>Status</th>
+                                {{-- <th>Item</th> --}}
                                 <th>Total</th>
+                                <th>Waktu</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -27,7 +29,9 @@
                                 <th>Nama Pembeli</th>
                                 <th>Resi</th>
                                 <th>Status</th>
+                                {{-- <th>Item</th> --}}
                                 <th>Total</th>
+                                <th>Waktu</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -43,59 +47,72 @@
 @endsection
 
 @section('js')
-    <!-- Edit Product -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="konfirmPembayaran" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="editModalLabel">Konfirmasi Pembayaran</h4>
+                </div>
+                <form id="pembayaran">
+                <div class="modal-body">
+                        @csrf
+                        <div class="form-group">
+                            <label for="no_resi">No. Resi</label>
+                            <input type="text" required class="form-control" name="no_resi" required id="no_resi">
+                            <input type="hidden" name="id_transaksi" required id="id_transaksi">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-round waves-effect">Save</button>
+                        <button type="button" class="btn btn-danger btn-simple btn-round waves-effect" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detail" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="title" id="editModalLabel">Edit Produk</h4>
+                    <h4 class="title" id="editModalLabel">Detail INV-<span id="invoiceNumber"></span></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="editProduct">
+                    <form id="detailInfo">
                         @csrf
+                        <input type="hidden" name="id_transaksi">
                         <div class="form-group">
-                            <label for="name">Nama Produk</label>
-                            <input type="text" class="form-control" name="name" required id="name">
+                            <label for="nama_pembeli">Nama Pembeli</label>
+                            <input type="text" class="form-control" disabled required id="nama_pembeli">
                         </div>
                         <div class="form-group">
-                            <label for="size">Ukuran</label>
-                            <input type="text" class="form-control" name="size" required id="size">
+                            <label for="total">Total</label>
+                            <input type="text" class="form-control" disabled required id="total">
                         </div>
                         <div class="form-group">
-                            <label for="stock">Jumlah Stok</label>
-                            <input type="text" class="form-control number" name="stock" required id="stock">
+                            <label for="status">Status</label>
+                            <input type="text" class="form-control" disabled required id="status">
                         </div>
                         <div class="form-group">
-                            <label for="price">Harga</label>
-                            <input type="text" class="form-control number" name="price" required id="price">
+                            <label for="ekspedisi">Ekspedisi</label>
+                            <input type="text" disabled class="form-control" required id="ekspedisi">
                         </div>
                         <div class="form-group">
-                            <label for="description">Deskripsi Produk</label>
-                            <textarea name="description" id="description" class="form-control" required cols="30" rows="10" style="resize: none;"></textarea>
+                            <label for="resi">Resi</label>
+                            <input type="text" class="form-control" name="resi" required id="resi">
                         </div>
                         <div class="form-group">
-                            <label for="gender">Jenis</label>
-                            <input type="text" class="form-control" name="gender" required id="gender">
+                            <label for="address">Alamat</label>
+                            <input type="text" class="form-control" disabled required id="address">
                         </div>
-                        <div class="form-group" id="categoryEditGroup">
+                        <div id="bukti_bayar">
 
                         </div>
-                        <div class="form-group">
-                            <div id="demo2" class="carousel slide" data-ride="carousel">
-                                <div id="productImageGroup">
-                                    
-                                </div>
-                                <a class="carousel-control-prev" href="#demo2" data-slide="prev"><span class="carousel-control-prev-icon"></span></a>
-                                <a class="carousel-control-next" href="#demo2" data-slide="next"><span class="carousel-control-next-icon"></span></a>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="gambar[]">Gambar</label>
-                            <button class="btn btn-primary btn-sm" id="addGambarEdit" type="button"><i class="zmdi zmdi-plus"></i></button>
-                            <button class="btn btn-secondary btn-sm" id="removeGambarEdit" type="button"><i class="zmdi zmdi-minus"></i></button>
-                            <div id="gambarGroupEdit">
+                        <div id="item" class="mt-3">
+                            <span>Item</span>
+                            <ul id="itemGroup">
 
-                            </div>
+                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -112,13 +129,15 @@
             $('#transaksi-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{route('transaksi.index')}}",
+                ajax: "{{url('/api/getTransaction')}}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'user.name', name: 'user.name'},
                     {data: 'resi', name: 'resi'},
-                    {data: 'status', name: 'status'},
+                    {data: 'status_convert', name: 'status_convert'},
+                    // {data: 'item', name: 'item'},
                     {data: 'total_rp', name: 'total_rp'},
+                    {data: 'waktu', name: 'waktu'},
                     {
                         data: 'action',
                         name: 'action',
@@ -129,143 +148,81 @@
             });
 
         })
-
-        $(document).on('click','.edit',function() {
+        $(document).on('click','.konfirmPembayaran',function(e) {
+            e.preventDefault()
             let id = $(this).data("id")
-            $('form#editProduct').data("id", id)
+            console.log(id)
+            $('#id_transaksi').val(id)
+            $('#konfirmPembayaran').modal('toggle')
+        })
 
-            $.get("{{ url('/api/product') }}" +'/' + id, function (response) {
-                $('#modal-edit').modal('toggle')
+        $('#pembayaran').submit(function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                method: "POST",
+                url: "{{url('/api/updateResi')}}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: $(this).serialize(),
+                dataType: 'JSON',
+                error: function(xhr, status, error) {
+                    for (variable in xhr.responseJSON.data) {
+                      toastr.error(xhr.responseJSON.data[variable])
+                  }
+                },
+                success: function(response){
+                    $('#transaksi-table').DataTable().ajax.reload();
+                    $('#konfirmPembayaran').modal('toggle')
+                    $('form#pembayaran').trigger('reset')
+                    toastr.success("Berhasil update resi")
+                }
+            })
+        })
+
+        $(document).on('click','.detail', function(e) {
+            e.preventDefault()
+            let id = $(this).data("id")
+            console.log(id)
+            $.get("{{ url('/api/transaction') }}" +'/' + id, function (response) {
                 console.log(response)
-                $('form#editProduct input[name="name"]').val(response.data.name)
-                $('form#editProduct input[name="size"]').val(response.data.size)
-                $('form#editProduct input[name="stock"]').val(response.data.stock)
-                $('form#editProduct input[name="price"]').val(response.data.price)
-                $('form#editProduct textarea[name="description"]').val(response.data.description)
-                $('form#editProduct input[name="gender"]').val(response.data.gender)
+                let str = "" + response.data.id
+                let pad = "000000"
+                let ans = pad.substring(0, pad.length - str.length) + str
+                $('#invoiceNumber').text(ans)
                 
-                imageCarousel(response.data.images)
-                spawnCategory(response.categories,response.data.category_id)
-                
+                $('form#detailInfo input[id="id_transaksi"]').val(response.data.id)
+                $('form#detailInfo input[id="nama_pembeli"]').val(`${response.data.user.name} - ${response.data.user.phone != null ? response.data.user.name : ''}`)
+                $('form#detailInfo input[id="total"]').val(response.data.total)
+                $('form#detailInfo input[id="status"]').val(response.data.status == 0 ? (response.data.bukti_bayar != null ? 'Sudah bayar' : 'Pending') : (response.data.status == 1 ? 'Dikirim' : 'Sukses'))
+                $('form#detailInfo input[id="ekspedisi"]').val(response.data.ekspedisi)
+                $('form#detailInfo input[id="resi"]').val(response.data.resi)
+                if (response.data.status == 2) {
+                    $('form#detailInfo input[id="resi"]').prop('disabled', true)
+                } else {
+                    $('form#detailInfo input[id="resi"]').prop('disabled', false)
+                }
+                $('form#detailInfo input[id="address"]').val(response.data.address)
+
+                let buktiBayar = `<span>Bukti Bayar</span><br><img src="/bukti_bayar/${response.data.bukti_bayar}" style="width:300px;"></img>`
+                $('div#bukti_bayar').html(buktiBayar)
+
+                response.data.carts.forEach(cart => {
+                    let cartElm = `<li>${cart.catalogue.name} - ${cart.catalogue.price * cart.quantity} (${cart.quantity} pcs)</li>`
+                    $('#itemGroup').append(cartElm)
+                });
+
             })
         })
 
-        function imageCarousel(images) {
-            $('#productImageGroup').html('')
-            let carouselIndicator = '<ul class="carousel-indicators"></ul><div class="carousel-inner"></div>'
-            $('#productImageGroup').append(carouselIndicator)
-
-            images.forEach((image, index) => {
-                let indicatorsElm = `<li data-target="#demo2" data-slide-to="${index}" class="${index == 0 ? 'active' : ''}"></li>`
-                $('ul.carousel-indicators').append(indicatorsElm)
-
-                let imgElm = `<div class="carousel-item text-center ${index == 0 ? 'active' : ''}"><img src="/images/${image.name}" class="img-fluid" style="height:300px; width:auto;" alt=""><div class="carousel-caption"><button type="button" data-id="${image.id}" class="btn btn-sm delete-img btn-danger"><i class="zmdi zmdi-delete"></i></button></div></div>`
-                $('div.carousel-inner').append(imgElm)
-            });
-        }
-
-        function spawnCategory(categories, selectedCategory) {
-            $('#categoryEditGroup').html('')
-
-            let selectElm = '<label for="category_id">Kategori</label><select name="category_id" required class="form-control" id="categoryEdit"></select>'
-            $('#categoryEditGroup').append(selectElm)
-
-
-            categories.forEach(category => {
-                let elm = `<option value="${category.id}" ${selectedCategory === category.id ? 'selected' : ''}>${category.nama}</option>`
-                $('#categoryEdit').append(elm)
-            });
-        }
-
-        // DELETE image of product
-        $(document).on('click', '.delete-img', function(e) {
-            e.preventDefault()
-            let id = $(this).data("id")
-
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel plx!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function(isConfirm){
-                if (isConfirm) {
-                    $.ajax({
-                            url: "{{ url('/api/image') }}" + "/" + id,
-                            type: 'DELETE',
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            error: function(xhr, status, error) {
-                                for (variable in xhr.responseJSON.data) {
-                                    toastr.error(xhr.responseJSON.data[variable])
-                                }
-                            },
-                            success: function (response){
-                                console.log(response)
-                                imageCarousel(response.data)
-                                toastr.success('Berhasil menghapus image')
-                            }
-                        });
-                    swal.close()
-                } else {
-                    swal.close()
-                }
-            });
-        })
-
-        // DELETE product
-        $(document).on('click', '.delete', function(e) {
-            e.preventDefault()
-            let id = $(this).data("id")
-
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel plx!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function(isConfirm){
-                if (isConfirm) {
-                    $.ajax({
-                            url: "{{ url('/api/product') }}" + "/" + id,
-                            type: 'DELETE',
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            success: function (response){
-                                console.log(response)
-                                $('#transaksi-table').DataTable().ajax.reload();
-                            }
-                        });
-                    swal.close()
-                    toastr.success('Berhasil menghapus product')
-                } else {
-                    swal.close()
-                }
-            });
-        })
-
-        // ADD product
-        $('form#addProduct').submit(function(e) {
-            e.preventDefault()
-
-            let frm = $('form#addProduct');
-            let formData = new FormData(frm[0]);
-            formData.append('file', $('input[type=file]')[0].files[0]);
+        $('#detailInfo').submit(function(e) {
+            e.preventDefault();
 
             $.ajax({
                 method: "POST",
-                url: "{{route('product.store')}}",
+                url: "{{url('/api/updateResi')}}",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: formData,
+                data: $(this).serialize(),
                 dataType: 'JSON',
-                processData: false,
-                contentType: false,
                 error: function(xhr, status, error) {
                     for (variable in xhr.responseJSON.data) {
                       toastr.error(xhr.responseJSON.data[variable])
@@ -273,75 +230,16 @@
                 },
                 success: function(response){
                     $('#transaksi-table').DataTable().ajax.reload();
-                    $('#addProduct').modal('toggle')
-                    $('form#addProduct').trigger('reset')
-                    toastr.success("Berhasil menambahkan product")
+                    $('#konfirmPembayaran').modal('toggle')
+                    $('form#pembayaran').trigger('reset')
+                    toastr.success("Berhasil update resi")
                 }
             })
         })
 
-        // UPDATE PROJECt
-        $('form#editProduct').submit(function(e){
-            e.preventDefault()
-            let id = $(this).data('id')
-
-            let frm = $('form#editProduct');
-            let formData = new FormData(frm[0]);
-
-            formData.append('file', $('input[type=file]')[0].files[0]);
-
-            $.ajax({
-                method: "POST",
-                url: "{{ url('/api/product') }}" + "/" + id + '/update',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                data: formData,
-                dataType: 'JSON',
-                processData: false,
-                contentType: false,
-                error: function(xhr, status, error) {
-                    for (variable in xhr.responseJSON.data) {
-                      toastr.error(xhr.responseJSON.data[variable])
-                  }
-                },
-                success: function(response){
-                    console.log(response)
-                    $('#transaksi-table').DataTable().ajax.reload();
-                    $('#editModal').modal('toggle')
-                    $('#editProduct').trigger("reset");
-                    toastr.success('Berhasil mengupdate product')
-                }
-            })
+        $('#detail').on('hidden.bs.modal', function (e) {
+            $('#bukti_bayar').html('')
+            $('#itemGroup').html('')            
         })
-
-    $(document).on('click', '#addGambar', function(e) {
-        e.preventDefault();
-        let element = '<input type="file" name="gambar[]" accept="image/*" id="gambar[]" required class="form-control gambar">'
-        $('#gambarGroup').append(element)
-    })
-
-    $(document).on('click', '#addGambarEdit', function(e) {
-        e.preventDefault();
-        let element = '<input type="file" name="gambar[]" accept="image/*" id="gambar[]" required class="form-control gambar">'
-        $('#gambarGroupEdit').append(element)
-    })
-
-    $('#editModal').on('hidden.bs.modal', function (e) {
-        $('#productImageGroup').html('')
-    })
-
-      $(document).on('click', '#removeGambar', function(e) {
-        e.preventDefault();
-        let numOfDiv = $('.gambar').length;
-        if (numOfDiv > 1) {
-          $("#gambarGroup").children("input[type=file]:last").fadeOut(300, function() { $(this).remove(); });
-        }
-        return;
-      })
-
-      $(document).on('click', '#removeGambarEdit', function(e) {
-        e.preventDefault();
-        $("#gambarGroupEdit").children("input[type=file]:last").fadeOut(300, function() { $(this).remove(); });
-        return;
-      })
     </script>
 @endsection
