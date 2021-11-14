@@ -16,7 +16,7 @@ class ConfigSeeder extends Seeder
     {
         DB::table('configs')->insert([
             'name' => 'Smile With Vegas',
-            'logo' => 'swv.png',
+            'logo' => 'swv.jpg',
             'phone' => '0761851266',
             'address' => 'Jl. Samarinda Kelurahan No.36B, Tengkerang Utara, Kec. Bukit Raya, Kota Pekanbaru, Riau 28126',
             'email' => 'smilewithvegas@swv.id',
