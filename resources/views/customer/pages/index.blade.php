@@ -16,8 +16,8 @@
               <h5 class="sub-title">Rp. {{ number_format($product->price,0,',','.') }}</h5>
               <h2 class="title">{{ $product->name }}</h2>
               {{-- <h4>70% OFF THIS WINTER</h4> --}}
-              <p>There are many variations of passages of Lorem Ipsum availables, but the majority have suffered alteration in some form.</p>
-              <a class="btn-slider" href="shop.html">Shop Now</a>
+              <p>There are many variations of clothes.</p>
+              <a class="btn-slider" href="{{ url('/product') }}">Shop Now</a>
             </div>
           </div>
         </div>
@@ -199,7 +199,7 @@
               </div>
               <div class="action-top">
                 <div class="pro-qty" id="proqty-qv-{{ $product->id }}" data-limit="{{ $product->stock }}">
-                  <input type="text" required name="quantity" id="quantity4" title="Quantity" value="1" />
+                  <input type="text" required name="quantity" id="quantity4" data-limit="{{ $product->stock }}" class="disabled" title="Quantity" value="1" />
                 </div>
                 @if (Auth::check())
                   @if (auth()->user()->role_id === 3)

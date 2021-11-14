@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogue;
 use App\Models\Transaction;
+use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -65,5 +66,39 @@ class PageController extends Controller
 
     public function transaction() {
         return view('customer.pages.transaction');
+    }
+
+    public function product(Request $request) {
+        if ($request->page && $request->page <= 0) {
+            abort(404);
+        }
+        $page = $request->page == null ? 1 : $request->page;
+        $limit = 20;
+        $offset = ($page*$limit)-$limit;
+
+        $totalRow = Catalogue::all()->count();
+
+        $products = Catalogue::offset($offset)->limit($limit)->with('images')->get(); 
+        $currentPage = $page;
+        $nextPage = $page+1;
+        $prevPage = $page-1;
+        $totalPage = ceil($totalRow / $limit);
+
+        if ($request->page && $request->page > $totalPage) {
+            abort(404);
+        }
+
+        return view('customer.pages.product', compact('products', 'currentPage', 'nextPage', 'prevPage', 'totalPage'));
+    }
+
+    public function detail($slug) {
+        try {
+            $product = Catalogue::where('slug',$slug)->where('isActive', 1)->first();
+
+            return view('customer.pages.detail', compact('product'));
+        } catch (QueryException $e) {
+            Alert::error('Error', $e);
+            return redirect()->back();
+        }
     }
 }

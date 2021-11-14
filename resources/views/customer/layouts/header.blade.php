@@ -12,10 +12,10 @@
         <div class="col-sm-4 col-lg-7 d-none d-lg-block">
           <div class="header-navigation-area">
             <ul class="main-menu nav position-relative">              
-              <li class="has-submenu"><a href="{{ url('/products') }}">Products</a>
+              <li class="has-submenu"><a href="{{ url('/product') }}">Products</a>
               </li>              
               <li><a href="mailto://{{ config('company.configs') != null ? config('company.configs')->email : '' }}">Contact</a></li>
-              <li><a href="{{ url('/about') }}">About</a></li>
+              {{-- <li><a href="{{ url('/about') }}">About</a></li> --}}
             </ul>
           </div>
         </div>

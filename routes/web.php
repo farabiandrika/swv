@@ -28,27 +28,33 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'revalidate'], function()
 {
     Route::get('/', [PageController::class, 'index']);
-    Route::get('/checkout', [PageController::class, 'checkout']);
-    Route::POST('/process-checkout', [PageController::class, 'processCheckout']);
-    Route::get('/transaction', [PageController::class, 'transaction']);
+    Route::get('/product', [PageController::class, 'product']);
+    Route::get('/detail/{slug}', [PageController::class, 'detail']);
+    
     Route::get('/config', function() {
         return config('company.configs') === null ? 'null' : 'ada';
     });
     
     Route::middleware(['auth'])->group(function () {
         Route::prefix('admin')->group(function() {
+            // Is Admin & Karyawan
             Route::get('/', [KaryawanController::class, 'index']);
-            Route::get('/karyawan', [AdminController::class, 'karyawan']);
             Route::get('/transaksi', [KaryawanController::class, 'transaksi']);
-            Route::get('/laporan', [AdminController::class, 'laporan']);
             Route::get('/category', [KaryawanController::class, 'category']);
             Route::get('/product', [KaryawanController::class, 'product']);
+
+            // Is Admin Only
+            Route::get('/karyawan', [AdminController::class, 'karyawan']);
+            Route::get('/laporan', [AdminController::class, 'laporan']);
             Route::get('/setting', [AdminController::class, 'setting']);
 
         });
      
         Route::middleware(['isCustomer'])->group(function () {
-            // is Customer
+            // Is Customer
+            Route::get('/checkout', [PageController::class, 'checkout']);
+            Route::POST('/process-checkout', [PageController::class, 'processCheckout']);
+            Route::get('/transaction', [PageController::class, 'transaction']);
         });
 
 

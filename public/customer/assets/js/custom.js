@@ -244,10 +244,13 @@
   proQty.append('<div class= "dec qty-btn">-</div>');
   $('.qty-btn').on('click', function (e) {
     e.preventDefault();
-    let stock = $('.product-quick-view-modal.active').data('stock');
+    // let stock = $('.product-quick-view-modal.active').data('stock');
+
     var $button = $(this);
     var oldValue = $button.parent().find('input').val();
-    if ($button.hasClass('inc') && oldValue < stock) {
+    var dataLimit = $button.parent().find('input').data("limit");
+    // console.log(dataLimit)
+    if ($button.hasClass('inc') && oldValue < dataLimit) {
       var newVal = parseFloat(oldValue) + 1;
     } else {
       // Don't allow decrementing below zero

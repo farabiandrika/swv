@@ -6,10 +6,15 @@ use App\Models\Cart;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\HttpFoundation\Response;
 
 class CartController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('isCustomer');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,6 +43,9 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->user()->role_id != 3) {
+            abort(404);
+        }
         $validator = Validator::make($request->all(), [
             'keterangan' => 'required|string',
             'quantity' => 'required|numeric',
@@ -53,11 +61,21 @@ class CartController extends Controller
                 'message' => 'Added to cart',
                 'data' => $cart,
             ];
-            return response()->json($response, Response::HTTP_CREATED);
+            if($request->ajax()){
+                return response()->json($response, Response::HTTP_CREATED);
+            }
+            
+            Alert::success('Berhasil','Berhasil menambahkan ke keranjang');
+            return redirect()->back();
         } catch (QueryException $e) {
-            return response()->json([
-                'message' => 'Failed '.$e,
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            if($request->ajax()){
+                return response()->json([
+                    'message' => 'Failed '.$e,
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+            
+            Alert::error('Gagal','Gagal '.$e);
+            return redirect()->back();
         }
     }
 
