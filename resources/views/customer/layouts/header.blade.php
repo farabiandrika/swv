@@ -32,6 +32,7 @@
                   <ul class="currency-dropdown">
                     <li class="account">
                       <ul>
+                        <li><a href="{{ url('/profile') }}">My Profile</a></li>
                         <li><a href="{{ url('/transaction') }}">Transaction</a></li>
                         <li><a href="{{ url('/logout') }}">Logout</a></li>
                       </ul>

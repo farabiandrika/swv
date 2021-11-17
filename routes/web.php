@@ -55,6 +55,8 @@ Route::group(['middleware' => 'revalidate'], function()
             Route::get('/checkout', [PageController::class, 'checkout']);
             Route::POST('/process-checkout', [PageController::class, 'processCheckout']);
             Route::get('/transaction', [PageController::class, 'transaction']);
+            Route::get('/profile', [PageController::class, 'profile']);
+            Route::POST('/updateProfile', [PageController::class, 'updateProfile'])->name('updateProfile');
         });
 
 
@@ -80,6 +82,9 @@ Route::group(['middleware' => 'revalidate'], function()
         Auth::logout();
         return redirect('/');
     });
+
+    Route::get('/forgot', [PageController::class, 'forgot']);
+    Route::POST('/resetPassword', [PageController::class, 'resetPassword'])->name('resetPassword');
 
     Auth::routes([
         'register' => true, // Registration Routes...

@@ -10,41 +10,26 @@
             <!--== Start Login Form ==-->
             <div class="login-form">
               <div class="content">
-                <h4 class="title">Login</h4>
-                <p>Please login using account detail bellow.</p>
+                <h4 class="title">Forgot Password</h4>
+                <p>Please insert your username or email.</p>
               </div>
-              <form method="POST" action="{{ route('login') }}">
+              <form method="POST" action="{{ route('resetPassword') }}">
                 @csrf
                 <div class="row">
                   <div class="col-12">
                     <div class="form-group">
                       <input class="form-control" name="username" type="username" required placeholder="Email or Username">
-                      @error('username')
-                        <span class="h6" role="alert">
-                            {{ $message }}
-                        </span>
-                      @enderror
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input class="form-control" type="password" name="password" required placeholder="Password">
-                      @error('password')
-                        <span class="h6" role="alert">
-                            {{ $message }}
-                        </span>
-                      @enderror
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="login-form-group">
-                      <button class="btn-sign" type="submit">Sign In</button>
+                      <button class="btn-sign" type="submit">Reset Password</button>
                       <a class="btn btn-create" href="{{ url('/register') }}">Create an Account</a>
                     </div>
                   </div>
                   <div class="col-12">
                     <div class="account-optional-group">
-                    <a class="btn btn-create" href="{{ url('/forgot') }}">Lupa Password</a>
+                    <a class="btn btn-create" href="{{ url('/login') }}">Login</a>
                       {{-- <a class="btn-create" href="{{ url('/register') }}">Create account</a> --}}
                     </div>
                   </div>

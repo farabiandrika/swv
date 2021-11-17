@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogue;
 use App\Models\Transaction;
+use App\Models\User;
 use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -22,6 +23,28 @@ class PageController extends Controller
             abort(404);
         }
         return view('customer.pages.checkout');
+    }
+
+    public function forgot()
+    {
+        return view('auth.forget');
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $user = User::orWhere('username', $request->username)->orWhere('email', $request->username)->first();
+        
+        if (!$user) {
+            Alert::error('Error','Username or Email not found');
+            return redirect()->back();
+        }
+
+        $user->update([
+            'password' => $request->username,
+        ]);
+
+        Alert::success('Berhasil', 'Harap login menggunakan password berupa email/username anda');
+        return redirect('/login');
     }
 
     public function processCheckout(Request $request) {
@@ -100,5 +123,45 @@ class PageController extends Controller
             Alert::error('Error', $e);
             return redirect()->back();
         }
+    }
+
+    public function profile()
+    {
+        return view('customer.pages.profile');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,'.auth()->user()->id,
+            'username' => 'required|string|unique:users,username,'.auth()->user()->id,
+            'address' => 'required',
+            'phone' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Gagal', $validator->errors());
+            return redirect()->back();
+        }
+
+        $user = User::findOrFail(auth()->user()->id);
+        $user->update($validator->validated());
+        
+        if($request->password || $request->password != '') {
+            $validator1 = Validator::make($request->all(), [
+                'password' => 'required|confirmed',
+            ]);
+
+            if ($validator->fails()) {
+                Alert::error('Gagal', $validator1->errors());
+                return redirect()->back();
+            }
+
+            $user->update($validator1->validated());
+        }
+
+        Alert::success("Berhasil", 'Berhasil update profile');
+        return redirect('/profile');
     }
 }
